@@ -22,10 +22,10 @@ public class GameMain extends JPanel {
     private Seed currentPlayer;  // the current player
     private JLabel statusBar;    // for displaying status message
 
+
     // Player names
     private String playerName1;
     private String playerName2;
-
 
     /** Constructor to setup the UI and game components */
     public GameMain() {
