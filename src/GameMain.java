@@ -22,8 +22,23 @@ public class GameMain extends JPanel {
     private Seed currentPlayer;  // the current player
     private JLabel statusBar;    // for displaying status message
 
+    // Player names
+    private String playerName1;
+    private String playerName2;
+
     /** Constructor to setup the UI and game components */
     public GameMain() {
+
+        // Input player's name
+        playerName1 = JOptionPane.showInputDialog("Enter player name 1:");
+        playerName2 = JOptionPane.showInputDialog("Enter player name 2:");
+        if (playerName1 == null || playerName1.trim().isEmpty()) {
+            playerName1 = "Player 1";
+        }
+
+        if (playerName2 == null || playerName2.trim().isEmpty()) {
+            playerName2 = "Player 2";
+        }
 
         // This JPanel fires MouseEvent
         super.addMouseListener(new MouseAdapter() {
@@ -104,16 +119,16 @@ public class GameMain extends JPanel {
         // Print status-bar message
         if (currentState == State.PLAYING) {
             statusBar.setForeground(Color.BLACK);
-            statusBar.setText((currentPlayer == Seed.CROSS) ? "X's Turn" : "O's Turn");
+            statusBar.setText((currentPlayer == Seed.CROSS) ? playerName1 + "'s Turn" : playerName2 + "'s Turn");
         } else if (currentState == State.DRAW) {
             statusBar.setForeground(Color.RED);
             statusBar.setText("It's a Draw! Click to play again.");
         } else if (currentState == State.CROSS_WON) {
             statusBar.setForeground(Color.RED);
-            statusBar.setText("'X' Won! Click to play again.");
+            statusBar.setText(playerName1 + " Won! Click to play again.");
         } else if (currentState == State.NOUGHT_WON) {
             statusBar.setForeground(Color.RED);
-            statusBar.setText("'O' Won! Click to play again.");
+            statusBar.setText(playerName2 + " Won! Click to play again.");
         }
     }
 
@@ -123,6 +138,38 @@ public class GameMain extends JPanel {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 JFrame frame = new JFrame(TITLE);
+
+                // Create a menu bar
+                JMenuBar menuBar = new JMenuBar();
+
+                // Create "Game" menu
+                JMenu gameMenu = new JMenu("Game");
+
+                // Add "Change Players" menu item
+                JMenuItem changePlayersItem = new JMenuItem("Change Players");
+                changePlayersItem.addActionListener(e -> {
+                    GameMain gamePanel = (GameMain) frame.getContentPane();
+                    gamePanel.playerName1 = JOptionPane.showInputDialog("Enter player name 1:");
+                    gamePanel.playerName2 = JOptionPane.showInputDialog("Enter player name 2:");
+                    if (gamePanel.playerName1 == null || gamePanel.playerName1.trim().isEmpty()) {
+                        gamePanel.playerName1 = "Player 1";
+                    }
+                    if (gamePanel.playerName2 == null || gamePanel.playerName2.trim().isEmpty()) {
+                        gamePanel.playerName2 = "Player 2";
+                    }
+                    gamePanel.newGame();
+                    gamePanel.repaint();
+                });
+                gameMenu.add(changePlayersItem);
+
+                // Add "Exit" menu item
+                JMenuItem exitItem = new JMenuItem("Exit");
+                exitItem.addActionListener(e -> System.exit(0));
+                gameMenu.add(exitItem);
+
+                // Add "Game" menu to the menu bar
+                menuBar.add(gameMenu);
+
                 // Set the content-pane of the JFrame to an instance of main JPanel
                 frame.setContentPane(new GameMain());
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
