@@ -26,6 +26,7 @@ public class GameMain extends JPanel {
     private String playerName1;
     private String playerName2;
 
+
     /** Constructor to setup the UI and game components */
     public GameMain() {
 
@@ -39,6 +40,9 @@ public class GameMain extends JPanel {
         if (playerName2 == null || playerName2.trim().isEmpty()) {
             playerName2 = "Player 2";
         }
+
+        // Start background music
+        SoundEffect.BACKSOUND.loop();
 
         // This JPanel fires MouseEvent
         super.addMouseListener(new MouseAdapter() {
@@ -55,14 +59,22 @@ public class GameMain extends JPanel {
                             && board.cells[row][col].content == Seed.NO_SEED) {
                         // Update cells[][] and return the new game state after the move
                         currentState = board.stepGame(currentPlayer, row, col);
+
                         // Play appropriate sound clip
-                        if (currentState == State.PLAYING) {
-                            SoundEffect.EAT_FOOD.play();
+                        if (currentPlayer == Seed.CROSS) {
+                            SoundEffect.PLAYER1.play();
                         } else {
-                            SoundEffect.DIE.play();
+                            SoundEffect.PLAYER2.play();
                         }
-                        // Switch player
-                        currentPlayer = (currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
+
+                        if (currentState == State.PLAYING) {
+                            // Switch player
+                            currentPlayer = (currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
+                        } else if (currentState == State.CROSS_WON || currentState == State.NOUGHT_WON) {
+                            SoundEffect.EXPLOSION.play();
+                        } else if (currentState == State.DRAW) {
+                            SoundEffect.GAME_OVER.play();
+                        }
                     }
                 } else {        // game over
                     newGame();  // restart the game

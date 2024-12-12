@@ -18,9 +18,11 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  * For Eclipse, place the audio file under "src", which will be copied into "bin".
  */
 public enum SoundEffect {
-    EAT_FOOD("Spongebob.wav"),
-    EXPLODE("Patrick.wav"),
-    DIE("Twing.wav");
+    PLAYER1("Spongebob.wav"),
+    PLAYER2("Patrick.wav"),
+    EXPLOSION("Twing.wav"),
+    GAME_OVER("gameover.wav"),
+    BACKSOUND("Backsound.wav");
 
     /** Nested enumeration for specifying volume */
     public static enum Volume {
@@ -59,6 +61,20 @@ public enum SoundEffect {
                 clip.stop();   // Stop the player if it is still running
             clip.setFramePosition(0); // rewind to the beginning
             clip.start();     // Start playing
+        }
+    }
+
+    /** Loop the sound effect continuously. */
+    public void loop() {
+        if (volume != Volume.MUTE) {
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        }
+    }
+
+    /** Stop the sound effect. */
+    public void stop() {
+        if (clip.isRunning()) {
+            clip.stop();
         }
     }
 
