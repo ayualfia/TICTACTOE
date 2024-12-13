@@ -22,7 +22,6 @@ public class GameMain extends JPanel {
     private Seed currentPlayer;  // the current player
     private JLabel statusBar;    // for displaying status message
 
-
     // Player names
     private String playerName1;
     private String playerName2;
@@ -150,37 +149,6 @@ public class GameMain extends JPanel {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 JFrame frame = new JFrame(TITLE);
-
-                // Create a menu bar
-                JMenuBar menuBar = new JMenuBar();
-
-                // Create "Game" menu
-                JMenu gameMenu = new JMenu("Game");
-
-                // Add "Change Players" menu item
-                JMenuItem changePlayersItem = new JMenuItem("Change Players");
-                changePlayersItem.addActionListener(e -> {
-                    GameMain gamePanel = (GameMain) frame.getContentPane();
-                    gamePanel.playerName1 = JOptionPane.showInputDialog("Enter player name 1:");
-                    gamePanel.playerName2 = JOptionPane.showInputDialog("Enter player name 2:");
-                    if (gamePanel.playerName1 == null || gamePanel.playerName1.trim().isEmpty()) {
-                        gamePanel.playerName1 = "Player 1";
-                    }
-                    if (gamePanel.playerName2 == null || gamePanel.playerName2.trim().isEmpty()) {
-                        gamePanel.playerName2 = "Player 2";
-                    }
-                    gamePanel.newGame();
-                    gamePanel.repaint();
-                });
-                gameMenu.add(changePlayersItem);
-
-                // Add "Exit" menu item
-                JMenuItem exitItem = new JMenuItem("Exit");
-                exitItem.addActionListener(e -> System.exit(0));
-                gameMenu.add(exitItem);
-
-                // Add "Game" menu to the menu bar
-                menuBar.add(gameMenu);
 
                 // Set the content-pane of the JFrame to an instance of main JPanel
                 frame.setContentPane(new GameMain());
